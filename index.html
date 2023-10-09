@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head><center>
+    <title>Online Code Editor</title></font>
+    <img src="logo.png" alt="Italian Trulli" width="100" height="100">
+    <style>
+        #editor {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        #output {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div><center><font size="5" color="red"><b>
+        <h2>Online Code Editor</h2></font>
+        <select id="language">
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+        </select>
+        <br>
+        <textarea id="editor" placeholder="Write your code here"></textarea>
+        <button onclick="runCode()">Run Code</button>
+    </div>
+    <div><font size="5" color="green">
+        <h2>Output</h2>
+        <pre id="output"></pre>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <script>
+        function runCode() {
+            var language = document.getElementById("language").value;
+            var code = document.getElementById("editor").value;
+            
+            axios.post("https://api.jdoodle.com/v1/execute", {
+                clientId: "YOUR_JDOODLE_CLIENT_ID",
+                clientSecret: "YOUR_JDOODLE_CLIENT_SECRET",
+                script: code,
+                language: language,
+                versionIndex: "0"
+            })
+            .then(function (response) {
+                document.getElementById("output").innerText = response.data.output;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    </script>
+</body>
+</html>
